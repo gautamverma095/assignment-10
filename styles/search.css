@@ -1,0 +1,33 @@
+#navbar {
+  display: flex;
+  padding-left: 4%;
+  padding-right: 4%;
+  border: solid black 1px;
+  justify-content: space-between;
+}
+#searchRecipe{
+    width: 60%;
+    /* height: 90%; */
+}
+#foodScroll{
+    border-left: grey;
+    height: 200px;
+    width: 56%;
+    margin: auto;
+    overflow: scroll;
+    margin-left: 250px;
+}
+#options {
+  display: flex;
+  gap: 20px;
+}
+#showData {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: center;
+  padding: 5%;
+  width: 100%;
+}
+img {
+  width: 100%;
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/search.css" />
+    <title>Menu</title>
+  </head>
+  <body>
+    <div id="container"></div>
+    <div id="showData"></div>
+  </body>
+</html>
+<script type="module">
+  let id;
+  import navbar from "./components/navbar.js";
+  import { randomData, displayMenu } from "./scripts/latest.js";
+  // console.log('randomData, appendRandom :', randomData, appendRandom )
+
+  console.log("navbar:", navbar);
+
+  let container = document.getElementById("container");
+
+  let showData = document.getElementById("showData");
+  container.innerHTML = navbar();
+
+  let response = randomData(
+    "https://www.themealdb.com/api/json/v1/1/categories.php"
+  );
+
+  //   handling the promise and we can use async function also
+  response
+    .then((res) => {
+      console.log("res:", res);
+
+      displayMenu(res.categories, showData);
+    })
+    .catch((error) => {
+      console.log("error:", error);
+    });
+</script>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/search.css" />
+    <title>Index</title>
+  </head>
+  
+  <style></style>
+  <body>
+    <div id="container"></div>
+
+    <div id="foodScroll"></div>
+    <div id="showData"></div>
+  </body>
+</html>
+<script type="module">
+  let id;
+  import navbar from "./components/navbar.js";
+  import { getData, appendData } from "./scripts/showFood.js";
+
+//   console.log("navbar:", navbar);
+
+  let container = document.getElementById("container");
+
+  let showData = document.getElementById("showData");
+  container.innerHTML = navbar();
+
+  let searchRecipe = document.getElementById("searchRecipe");
+  searchRecipe.addEventListener("input", debounce);
+
+  function debounce( ) {
+      if (id) {
+        clearTimeout(id);
+      }
+
+      id = setTimeout(function () {
+       searchFood()
+      }, 1000);
+    }
+  async function searchFood() {
+    try {
+      let food = searchRecipe.value;
+
+      if (food.length <= 2) {
+        return false;
+      }
+      let response = await fetch(
+        `https://www.themealdb.com/api/json/v1/1/search.php?s=${food}`
+      );
+
+      let data = await response.json();
+      console.log("data:", data.meals);
+
+      appendFood(data.meals);
+    } catch (error) {
+      console.log("error:", error);
+    }
+  }
+  function appendFood(arr) {
+    document.querySelector("#foodScroll").innerHTML = null;
+
+    if (arr === undefined) {
+      return false;
+    }
+    arr.map(function (elem) {
+      let p = document.createElement("p");
+      p.innerText = elem.strMeal;
+      p.addEventListener("click", function () {
+        let response = getData(
+          `https://www.themealdb.com/api/json/v1/1/search.php?s=${elem.strMeal}`
+        );
+        response
+          .then((res) => {
+              console.log("res:", res);
+
+            appendData(res.meals, showData);
+          })
+          .catch((error) => {
+            console.log("error:", error);
+          });
+      });
+
+      document.querySelector("#foodScroll").append(p);
+    });
+  }
+
+   
+</script>
